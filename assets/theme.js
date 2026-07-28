@@ -155,6 +155,7 @@ function initializeProduct(scope) {
   const optionInputs = [...form.querySelectorAll('input[name^="options["]')];
   const idInput = form.querySelector("[data-variant-id]");
   const price = scope.querySelector("[data-product-price]");
+  const comparePrice = scope.querySelector("[data-product-compare-price]");
   const button = form.querySelector("[data-add-to-cart]");
 
   const updateVariant = () => {
@@ -163,6 +164,11 @@ function initializeProduct(scope) {
     if (!variant) return;
     idInput.value = variant.id;
     if (price) price.textContent = money(variant.price);
+    if (comparePrice) {
+      const onSale = variant.compare_at_price && variant.compare_at_price > variant.price;
+      comparePrice.textContent = onSale ? money(variant.compare_at_price) : "";
+      comparePrice.hidden = !onSale;
+    }
     button.disabled = !variant.available;
     button.firstChild.textContent = variant.available ? "Add to cart " : "Sold out ";
     if (history.replaceState && scope.classList.contains("main-product")) {

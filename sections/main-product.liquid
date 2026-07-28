@@ -30,7 +30,16 @@
   </div>
   <div class="product-details">
     <p class="eyebrow">{{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}</p>
-    <div class="product-title-row"><h1>{{ product.title }}</h1><p class="product-price" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</p></div>
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    <div class="product-title-row">
+      <h1>{{ product.title }}</h1>
+      <div class="product-prices">
+        <span class="product-price" data-product-price>{{ current_variant.price | money }}</span>
+        <s class="product-compare-price" data-product-compare-price{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}>
+          {% if current_variant.compare_at_price > current_variant.price %}{{ current_variant.compare_at_price | money }}{% endif %}
+        </s>
+      </div>
+    </div>
     <div class="product-description rte">{{ product.description }}</div>
 
     {% form 'product', product, class: 'product-form', data-product-form: '' %}

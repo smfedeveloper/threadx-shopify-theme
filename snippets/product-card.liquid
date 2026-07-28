@@ -30,6 +30,11 @@
   </div>
   <div class="product-card__info">
     <div><h3><a href="{{ product.url }}">{{ product.title }}</a></h3><p>{{ product.type | default: product.vendor }}</p></div>
-    <p class="price">{{ product.price | money }}</p>
+    <div class="card-prices">
+      <span class="price">{{ product.price | money }}</span>
+      {% if product.compare_at_price > product.price %}
+        <s class="compare-price">{{ product.compare_at_price | money }}</s>
+      {% endif %}
+    </div>
   </div>
 </article>
