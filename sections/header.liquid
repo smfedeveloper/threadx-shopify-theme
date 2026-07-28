@@ -14,7 +14,7 @@
   </a>
   <div class="site-header__actions">
     <a href="{{ routes.search_url }}">{{ 'general.search' | t }}</a>
-    <a href="{{ routes.cart_url }}">{{ 'general.cart' | t }} <span data-cart-count>({{ cart.item_count }})</span></a>
+    <a href="{{ routes.cart_url }}" data-cart-open aria-controls="CartDrawer">{{ 'general.cart' | t }} <span data-cart-count>({{ cart.item_count }})</span></a>
   </div>
 </header>
 

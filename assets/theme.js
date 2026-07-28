@@ -5,6 +5,147 @@ const money = (cents) => {
   return new Intl.NumberFormat(document.documentElement.lang || "en", { style: "currency", currency }).format(cents / 100);
 };
 
+const cartDrawer = document.querySelector("#CartDrawer");
+const cartItems = cartDrawer?.querySelector("[data-cart-items]");
+const cartFooter = cartDrawer?.querySelector("[data-cart-footer]");
+const cartStatus = cartDrawer?.querySelector("[data-cart-status]");
+let cartDrawerTrigger = null;
+
+const escapeHTML = (value = "") => String(value).replace(/[&<>"']/g, (character) => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#039;"
+})[character]);
+
+async function getCart() {
+  const response = await fetch(`${window.Shopify?.routes?.root || "/"}cart.js`, {
+    headers: { "X-Requested-With": "XMLHttpRequest" }
+  });
+  if (!response.ok) throw new Error("Your shopping bag could not be loaded.");
+  return response.json();
+}
+
+function renderCart(cart) {
+  document.querySelectorAll("[data-cart-count]").forEach((node) => {
+    node.textContent = `(${cart.item_count})`;
+  });
+  cartDrawer?.querySelectorAll("[data-cart-drawer-count]").forEach((node) => {
+    node.textContent = `(${cart.item_count})`;
+  });
+  if (!cartItems || !cartFooter) return;
+
+  if (!cart.items.length) {
+    cartItems.innerHTML = '<div class="cart-drawer__empty"><p>Your shopping bag is empty.</p><button class="underlined" type="button" data-cart-close>Continue shopping</button></div>';
+    cartFooter.hidden = true;
+    return;
+  }
+
+  cartItems.innerHTML = cart.items.map((item) => {
+    const options = item.options_with_values
+      .filter((option) => option.value !== "Default Title")
+      .map((option) => `<span>${escapeHTML(option.name)}: ${escapeHTML(option.value)}</span>`)
+      .join("");
+    const image = item.image
+      ? `<a href="${escapeHTML(item.url)}"><img src="${escapeHTML(item.image)}&width=240" width="120" height="150" alt="${escapeHTML(item.product_title)}"></a>`
+      : "";
+    return `
+      <article class="cart-drawer__item" data-cart-line data-line-key="${escapeHTML(item.key)}">
+        ${image}
+        <div class="cart-drawer__item-details">
+          <a href="${escapeHTML(item.url)}"><strong>${escapeHTML(item.product_title)}</strong></a>
+          <div class="cart-drawer__options">${options}</div>
+          <div class="cart-drawer__item-actions">
+            <label>
+              <span class="visually-hidden">Quantity for ${escapeHTML(item.product_title)}</span>
+              <input type="number" min="0" value="${item.quantity}" inputmode="numeric" data-cart-quantity>
+            </label>
+            <button type="button" data-cart-remove>Remove</button>
+          </div>
+        </div>
+        <strong class="cart-drawer__line-price">${money(item.final_line_price)}</strong>
+      </article>`;
+  }).join("");
+  cartDrawer.querySelector("[data-cart-subtotal]").textContent = money(cart.total_price);
+  cartFooter.hidden = false;
+}
+
+async function openCartDrawer(trigger) {
+  if (!cartDrawer) return;
+  cartDrawerTrigger = trigger || document.activeElement;
+  if (cartStatus) cartStatus.textContent = "Loading your shopping bag.";
+  if (!cartDrawer.open) cartDrawer.showModal();
+  document.body.classList.add("cart-drawer-open");
+  try {
+    renderCart(await getCart());
+    if (cartStatus) cartStatus.textContent = "";
+  } catch (error) {
+    if (cartStatus) cartStatus.textContent = error.message;
+  }
+}
+
+function closeCartDrawer() {
+  if (!cartDrawer?.open) return;
+  cartDrawer.close();
+  document.body.classList.remove("cart-drawer-open");
+  cartDrawerTrigger?.focus();
+}
+
+async function changeCartLine(key, quantity) {
+  if (cartStatus) cartStatus.textContent = "Updating your shopping bag.";
+  cartDrawer?.classList.add("is-loading");
+  try {
+    const response = await fetch(`${window.Shopify?.routes?.root || "/"}cart/change.js`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      body: JSON.stringify({ id: key, quantity })
+    });
+    const cart = await response.json();
+    if (!response.ok) throw new Error(cart.description || "Your shopping bag could not be updated.");
+    renderCart(cart);
+    if (cartStatus) cartStatus.textContent = "Shopping bag updated.";
+  } catch (error) {
+    if (cartStatus) cartStatus.textContent = error.message;
+    try {
+      renderCart(await getCart());
+    } catch (_) {
+      // Keep the original cart error visible.
+    }
+  } finally {
+    cartDrawer?.classList.remove("is-loading");
+  }
+}
+
+document.addEventListener("click", (event) => {
+  const openTrigger = event.target.closest("[data-cart-open]");
+  if (openTrigger && cartDrawer) {
+    event.preventDefault();
+    openCartDrawer(openTrigger);
+    return;
+  }
+  if (event.target.closest("[data-cart-close]")) closeCartDrawer();
+  const removeButton = event.target.closest("[data-cart-remove]");
+  if (removeButton) {
+    const line = removeButton.closest("[data-cart-line]");
+    changeCartLine(line.dataset.lineKey, 0);
+  }
+});
+
+cartDrawer?.addEventListener("change", (event) => {
+  const quantityInput = event.target.closest("[data-cart-quantity]");
+  if (!quantityInput) return;
+  const line = quantityInput.closest("[data-cart-line]");
+  changeCartLine(line.dataset.lineKey, Math.max(0, Number(quantityInput.value) || 0));
+});
+cartDrawer?.addEventListener("click", (event) => {
+  if (event.target === cartDrawer) closeCartDrawer();
+});
+cartDrawer?.addEventListener("close", () => document.body.classList.remove("cart-drawer-open"));
+
 function initializeProduct(scope) {
   if (!scope || scope.dataset.initialized === "true") return;
   const json = scope.querySelector("[data-product-json]");
@@ -43,9 +184,9 @@ function initializeProduct(scope) {
         body: new FormData(form)
       });
       if (!response.ok) throw new Error((await response.json()).description || "Unable to add this item.");
-      const cart = await fetch(`${window.Shopify?.routes?.root || "/"}cart.js`).then((result) => result.json());
-      document.querySelectorAll("[data-cart-count]").forEach((node) => node.textContent = `(${cart.item_count})`);
       if (message) message.textContent = "Added to your bag.";
+      closeQuickView();
+      await openCartDrawer(button);
     } catch (error) {
       if (message) message.textContent = error.message;
     } finally {

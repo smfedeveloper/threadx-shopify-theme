@@ -20,5 +20,27 @@
       <button class="quick-view__close" type="button" data-quick-view-close aria-label="Close quick view">×</button>
       <div data-quick-view-content></div>
     </dialog>
+    <dialog class="cart-drawer" id="CartDrawer" aria-labelledby="CartDrawerTitle">
+      <div class="cart-drawer__header">
+        <div>
+          <p class="eyebrow">Your selection</p>
+          <h2 id="CartDrawerTitle">Shopping bag <span data-cart-drawer-count>({{ cart.item_count }})</span></h2>
+        </div>
+        <button class="cart-drawer__close" type="button" data-cart-close aria-label="Close shopping bag">&times;</button>
+      </div>
+      <div class="cart-drawer__status" data-cart-status role="status" aria-live="polite"></div>
+      <div class="cart-drawer__items" data-cart-items></div>
+      <div class="cart-drawer__footer" data-cart-footer hidden>
+        <div class="cart-drawer__subtotal">
+          <span>Subtotal</span>
+          <strong data-cart-subtotal>{{ cart.total_price | money }}</strong>
+        </div>
+        <p>Taxes and shipping calculated at checkout.</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button class="buy-button" type="submit" name="checkout">Checkout <span>&rarr;</span></button>
+        </form>
+        <a class="underlined" href="{{ routes.cart_url }}">View shopping bag <span>&nearr;</span></a>
+      </div>
+    </dialog>
   </body>
 </html>
