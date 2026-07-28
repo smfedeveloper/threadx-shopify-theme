@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "404",
+        "heading": "This page has moved.",
+        "text": "<p>Return to the ThreadX collection and continue exploring.</p>",
+        "dark": false
+      }
+    }
+  },
+  "order": ["main"]
+}

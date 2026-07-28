@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "hero": { "type": "hero", "settings": {} },
+    "signature": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "The signature collection",
+        "heading": "The essentials",
+        "description": "A focused study in modern uniform dressing.",
+        "dark": false,
+        "products_to_show": 6
+      }
+    },
+    "atelier": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "ThreadX X1 · Technical essentials",
+        "heading": "The Performance Atelier",
+        "description": "Precision-knit compression, considered cushioning and enduring comfort—engineered for movement.",
+        "dark": true,
+        "products_to_show": 6
+      }
+    },
+    "story": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "Built without compromise",
+        "heading": "Quality you can feel.",
+        "text": "<p>Every ThreadX piece begins with a simple question: will it still feel right years from now? From fabric and fit to hardware and finishing, every decision serves comfort, confidence and longevity.</p>",
+        "dark": true
+      }
+    },
+    "newsletter": { "type": "newsletter", "settings": {} }
+  },
+  "order": ["hero", "signature", "atelier", "story", "newsletter"]
+}

@@ -1,0 +1,31 @@
+<section class="hero">
+  {% if section.settings.image %}
+    {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'hero__image', widths: '750,1100,1500,2000,2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+  {% else %}
+    {{ 'lifestyle-2' | placeholder_svg_tag: 'hero__image placeholder' }}
+  {% endif %}
+  <div class="hero__shade"></div>
+  <div class="hero__content page-width">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1>{{ section.settings.heading }}</h1>
+    <p>{{ section.settings.text }}</p>
+    {% if section.settings.button_label != blank %}
+      <a class="button button--light" href="{{ section.settings.button_link }}">{{ section.settings.button_label }} <span>↗</span></a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The signature collection · 2026" },
+    { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>Built for now.<br><em>Made to endure.</em></p>" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Elevated essentials, crafted with intention. Designed for every move, every moment, every day." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Discover the collection" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

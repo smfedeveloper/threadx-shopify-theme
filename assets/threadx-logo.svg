@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 708 120" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision">
+  <title id="title">ThreadX</title>
+  <desc id="desc">ThreadX premium fashion wordmark</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5e3c2"/>
+      <stop offset=".24" stop-color="#dfc08c"/>
+      <stop offset=".52" stop-color="#c69d5f"/>
+      <stop offset=".78" stop-color="#a9793f"/>
+      <stop offset="1" stop-color="#81572f"/>
+    </linearGradient>
+  </defs>
+  <g fill="#faf9f6" transform="skewX(-10)" fill-rule="evenodd">
+    <path d="M17 30h92l-7 15H67L48 84H25l19-39H10z"/>
+    <path d="M112 30h22l-8 19h50l9-19h22l-24 54h-22l9-21h-50l-9 21H89z"/>
+    <path d="M218 30h78c18 0 25 7 20 19l-3 7c-3 8-11 13-23 15l16 13h-29l-13-13h-37l-6 13h-22zm16 15-6 13h53c6 0 10-2 12-6l1-3c1-3-2-4-8-4z"/>
+    <path d="M330 30h84l-7 15h-62l-4 7h54l-6 13h-53l-3 5h64l-7 14h-86z"/>
+    <path d="M425 30h35l17 54h-23l-3-10h-45l-13 10h-26zm16 15-22 18h29z"/>
+    <path d="M479 30h55c29 0 39 10 30 30l-1 3c-7 14-22 21-46 21h-62zm17 15-11 25h35c11 0 18-3 21-10l1-2c3-8-2-13-16-13z"/>
+  </g>
+  <g fill="url(#gold)" fill-rule="nonzero">
+    <path d="M581 18c25-1 44 8 60 29 8 10 15 22 22 33 10 15 23 23 39 25-17 8-34 7-49-4-13-9-24-24-34-44-10-20-23-33-38-39z"/>
+    <path d="M704 7c-25 11-49 28-71 52-20 22-41 37-65 45 25 3 49-5 71-24 20-18 42-42 65-73z"/>
+  </g>
+</svg>

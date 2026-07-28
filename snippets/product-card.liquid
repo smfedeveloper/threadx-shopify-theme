@@ -1,0 +1,35 @@
+<article class="product-card">
+  <div class="product-card__media" data-card-gallery>
+    <div class="product-card__slides">
+      {% if product.media.size > 0 %}
+        {% for media in product.media limit: 6 %}
+          <a class="product-card__slide{% if forloop.first %} is-active{% endif %}" href="{{ product.url }}" data-gallery-slide aria-label="{{ product.title | escape }}{% if product.media.size > 1 %}, image {{ forloop.index }}{% endif %}" {% unless forloop.first %}hidden{% endunless %}>
+            {% assign card_alt = media.alt | default: product.title %}
+            {{ media.preview_image | image_url: width: 1000 | image_tag: class: 'product-card__image', widths: '360,540,720,1000', sizes: '(min-width: 990px) 33vw, 50vw', loading: 'lazy', alt: card_alt }}
+          </a>
+        {% endfor %}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
+      {% endif %}
+      {% if product.media.size > 1 %}
+        <button class="gallery-arrow gallery-arrow--previous" type="button" data-gallery-previous aria-label="Previous image of {{ product.title | escape }}">&#8592;</button>
+        <button class="gallery-arrow gallery-arrow--next" type="button" data-gallery-next aria-label="Next image of {{ product.title | escape }}">&#8594;</button>
+      {% endif %}
+    </div>
+    {% unless product.available %}<span class="badge">Sold out</span>{% endunless %}
+    <button class="quick-view-trigger" type="button" data-quick-view-url="{{ product.url }}" aria-label="Quick view {{ product.title | escape }}">{{ 'products.quick_view' | t }} <span>↗</span></button>
+    {% if product.media.size > 1 %}
+      <div class="product-card__thumbnails" role="tablist" aria-label="{{ product.title | escape }} images">
+        {% for media in product.media limit: 6 %}
+          <button class="product-card__thumbnail{% if forloop.first %} is-active{% endif %}" type="button" data-gallery-thumbnail data-slide-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+            {{ media.preview_image | image_url: width: 120 | image_tag: widths: '60,90,120', sizes: '48px', loading: 'lazy', alt: '' }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="product-card__info">
+    <div><h3><a href="{{ product.url }}">{{ product.title }}</a></h3><p>{{ product.type | default: product.vendor }}</p></div>
+    <p class="price">{{ product.price | money }}</p>
+  </div>
+</article>

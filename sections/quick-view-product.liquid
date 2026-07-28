@@ -1,0 +1,44 @@
+<div class="quick-product" data-product-section>
+  <div class="quick-product__media">
+    {% if product.featured_media %}
+      {% assign quick_alt = product.featured_media.alt | default: product.title %}
+      {{ product.featured_media | image_url: width: 1200 | image_tag: widths: '500,800,1200', sizes: '(min-width: 800px) 55vw, 100vw', loading: 'eager', alt: quick_alt }}
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+    {% endif %}
+  </div>
+  <div class="quick-product__details">
+    <p class="eyebrow">{{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}</p>
+    <div class="product-title-row"><h2>{{ product.title }}</h2><p class="product-price" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</p></div>
+    <div class="quick-product__description">{{ product.description | strip_html | truncatewords: 35 }}</div>
+    {% form 'product', product, class: 'product-form', data-product-form: '' %}
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <fieldset class="option-picker">
+            <legend>{{ option.name }}</legend>
+            <div class="option-values">
+              {% for value in option.values %}
+                <label><input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %}><span>{{ value }}</span></label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      {% endunless %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+      <input type="hidden" name="quantity" value="1">
+      <button class="buy-button" type="submit" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} data-add-to-cart>
+        {% if product.selected_or_first_available_variant.available %}{{ 'products.add_to_cart' | t }}{% else %}{{ 'products.sold_out' | t }}{% endif %} <span>→</span>
+      </button>
+      <p class="form-message" data-form-message role="status"></p>
+    {% endform %}
+    <a class="underlined" href="{{ product.url }}">{{ 'products.view_details' | t }} <span>↗</span></a>
+  </div>
+  <script type="application/json" data-product-json>{{ product.variants | json }}</script>
+</div>
+
+{% schema %}
+{
+  "name": "Quick view product",
+  "settings": []
+}
+{% endschema %}

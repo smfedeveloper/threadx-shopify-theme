@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": { "type": "main-product", "settings": {} },
+    "related": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Continue exploring",
+        "heading": "More from ThreadX",
+        "products_to_show": 3,
+        "dark": false
+      }
+    }
+  },
+  "order": ["main", "related"]
+}

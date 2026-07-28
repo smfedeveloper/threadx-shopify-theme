@@ -1,0 +1,24 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_background }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <title>{% if page_title != blank %}{{ page_title }} · {% endif %}{{ shop.name }}</title>
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    {{ content_for_header }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#MainContent">Skip to content</a>
+    {% section 'header' %}
+    <main id="MainContent" tabindex="-1">{{ content_for_layout }}</main>
+    {% section 'footer' %}
+    <dialog class="quick-view" id="QuickViewDialog" aria-label="Product quick view">
+      <button class="quick-view__close" type="button" data-quick-view-close aria-label="Close quick view">×</button>
+      <div data-quick-view-content></div>
+    </dialog>
+  </body>
+</html>

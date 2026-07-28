@@ -1,0 +1,29 @@
+<footer class="site-footer">
+  <div class="site-footer__grid">
+    <div>
+      <a class="footer-brand" href="{{ routes.root_url }}">THREAD<b>X</b></a>
+      <p>{{ section.settings.tagline }}</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <h2>Explore</h2>
+      {% for link in section.settings.menu.links %}<a href="{{ link.url }}">{{ link.title }}</a>{% endfor %}
+    </nav>
+    <div>
+      <h2>Service</h2>
+      <a href="{{ routes.contact_url | default: '/pages/contact' }}">Contact</a>
+      <a href="{{ routes.cart_url }}">Cart</a>
+      <a href="{{ routes.search_url }}">Search</a>
+    </div>
+  </div>
+  <div class="site-footer__bottom"><span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span><span>{{ powered_by_link }}</span></div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "textarea", "id": "tagline", "label": "Tagline", "default": "Refined essentials for life in motion." },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+  ]
+}
+{% endschema %}

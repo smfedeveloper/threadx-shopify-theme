@@ -1,0 +1,29 @@
+<div class="announcement">{{ section.settings.announcement }}</div>
+<header class="site-header">
+  <nav class="site-header__nav" aria-label="Primary navigation">
+    {% for link in section.settings.menu.links %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {% endfor %}
+  </nav>
+  <a class="site-header__brand" href="{{ routes.root_url }}">
+    {% if settings.logo %}
+      {{ settings.logo | image_url: width: 640 | image_tag: widths: '180,220,320,440', width: settings.logo_width, alt: shop.name }}
+    {% else %}
+      <img src="{{ 'threadx-logo.svg' | asset_url }}" width="{{ settings.logo_width }}" height="58" alt="{{ shop.name | escape }}">
+    {% endif %}
+  </a>
+  <div class="site-header__actions">
+    <a href="{{ routes.search_url }}">{{ 'general.search' | t }}</a>
+    <a href="{{ routes.cart_url }}">{{ 'general.cart' | t }} <span data-cart-count>({{ cart.item_count }})</span></a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "text", "id": "announcement", "label": "Announcement", "default": "Complimentary delivery on all launch collection orders" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

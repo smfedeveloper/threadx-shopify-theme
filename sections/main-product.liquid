@@ -1,0 +1,76 @@
+<section class="main-product section-shell" data-product-section>
+  <div class="product-gallery" data-product-gallery>
+    <div class="product-gallery__stage">
+      {% for media in product.media %}
+        <figure class="product-gallery__item{% if forloop.first %} is-active{% endif %}" data-gallery-slide data-media-id="{{ media.id }}" {% unless forloop.first %}hidden{% endunless %}>
+          {% if media.media_type == 'image' %}
+            {% assign media_alt = media.alt | default: product.title %}
+            {{ media | image_url: width: 1800 | image_tag: widths: '600,900,1200,1800', sizes: '(min-width: 900px) 60vw, 100vw', loading: 'lazy', alt: media_alt }}
+          {% else %}
+            {{ media | media_tag: image_size: '1200x', controls: true }}
+          {% endif %}
+        </figure>
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+      {% endfor %}
+      {% if product.media.size > 1 %}
+        <button class="gallery-arrow gallery-arrow--previous" type="button" data-gallery-previous aria-label="Previous product image">&#8592;</button>
+        <button class="gallery-arrow gallery-arrow--next" type="button" data-gallery-next aria-label="Next product image">&#8594;</button>
+      {% endif %}
+    </div>
+    {% if product.media.size > 1 %}
+      <div class="product-gallery__thumbnails" role="tablist" aria-label="Product images">
+        {% for media in product.media %}
+          <button class="product-gallery__thumbnail{% if forloop.first %} is-active{% endif %}" type="button" data-gallery-thumbnail data-slide-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }} of {{ product.media.size }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+            {{ media.preview_image | image_url: width: 180 | image_tag: widths: '90,120,180', sizes: '80px', loading: 'lazy', alt: '' }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="product-details">
+    <p class="eyebrow">{{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}</p>
+    <div class="product-title-row"><h1>{{ product.title }}</h1><p class="product-price" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</p></div>
+    <div class="product-description rte">{{ product.description }}</div>
+
+    {% form 'product', product, class: 'product-form', data-product-form: '' %}
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <fieldset class="option-picker">
+            <legend>{{ option.name }}</legend>
+            <div class="option-values">
+              {% for value in option.values %}
+                <label>
+                  <input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %}>
+                  <span>{{ value }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      {% endunless %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+      <label class="quantity-label" for="Quantity-{{ section.id }}">Quantity</label>
+      <input class="quantity-input" id="Quantity-{{ section.id }}" type="number" name="quantity" value="1" min="1">
+      <button class="buy-button" type="submit" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} data-add-to-cart>
+        {% if product.selected_or_first_available_variant.available %}{{ 'products.add_to_cart' | t }}{% else %}{{ 'products.sold_out' | t }}{% endif %} <span>→</span>
+      </button>
+      {{ form | payment_button }}
+      <p class="form-message" data-form-message role="status"></p>
+    {% endform %}
+
+    <div class="product-assurances">
+      <div><strong>Premium fabrication</strong><span>Considered materials and enduring construction.</span></div>
+      <div><strong>Complimentary delivery</strong><span>Available on launch collection orders.</span></div>
+      <div><strong>Secure checkout</strong><span>Protected payments through Shopify.</span></div>
+    </div>
+  </div>
+  <script type="application/json" data-product-json>{{ product.variants | json }}</script>
+</section>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": []
+}
+{% endschema %}

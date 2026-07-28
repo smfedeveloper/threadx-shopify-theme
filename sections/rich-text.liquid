@@ -1,0 +1,18 @@
+<section class="story-section section-shell{% if section.settings.dark %} story-section--dark{% endif %}">
+  <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+  <h2>{{ section.settings.heading }}</h2>
+  <div class="rte">{{ section.settings.text }}</div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Designed for every moment." },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "checkbox", "id": "dark", "label": "Dark style", "default": false }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

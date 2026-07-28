@@ -1,0 +1,26 @@
+<section class="main-search section-shell">
+  <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+    <label for="SearchInput-{{ section.id }}">Search ThreadX</label>
+    <div><input id="SearchInput-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products"><button type="submit">Search</button></div>
+  </form>
+  {% if search.performed %}
+    <p class="eyebrow">{{ search.results_count }} results for “{{ search.terms }}”</p>
+    {% paginate search.results by section.settings.products_per_page %}
+      <div class="product-grid">
+        {% for item in search.results %}
+          {% if item.object_type == 'product' %}{% render 'product-card', product: item %}{% endif %}
+        {% endfor %}
+      </div>
+      {{ paginate | default_pagination }}
+    {% endpaginate %}
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Main search",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 6, "max": 24, "step": 3, "default": 12 }
+  ]
+}
+{% endschema %}
