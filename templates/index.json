@@ -15,9 +15,9 @@
         "image": "shopify://shop_images/Generated_image_1.png",
         "eyebrow": "The signature collection · 2026",
         "heading": "<p>Built for now.<br/><em>Made to endure.</em></p>",
-        "text": "Elevated essentials, crafted with intention. Designed for every move, every moment, every day.",
-        "button_label": "Discover the collection",
-        "button_link": ""
+        "text": "Premium everyday tracksuits engineered for comfort, movement and long-lasting wear.",
+        "button_label": "Shop Tracksuits",
+        "button_link": "shopify://collections/the-essentials"
       }
     },
     "signature": {
