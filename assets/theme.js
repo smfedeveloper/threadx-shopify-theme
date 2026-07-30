@@ -211,7 +211,7 @@ function initializeGallery(gallery) {
   if (slides.length < 2) return;
   let activeIndex = Math.max(0, slides.findIndex((slide) => slide.classList.contains("is-active")));
 
-  const showSlide = (index) => {
+  const showSlide = (index, scrollThumbnail = true) => {
     activeIndex = (index + slides.length) % slides.length;
     slides.forEach((slide, slideIndex) => {
       const active = slideIndex === activeIndex;
@@ -226,7 +226,7 @@ function initializeGallery(gallery) {
       const active = thumbnailIndex === activeIndex;
       thumbnail.classList.toggle("is-active", active);
       thumbnail.setAttribute("aria-selected", String(active));
-      if (active) thumbnail.scrollIntoView({ block: "nearest", inline: "nearest" });
+      if (active && scrollThumbnail) thumbnail.scrollIntoView({ block: "nearest", inline: "nearest" });
     });
   };
 
@@ -246,7 +246,7 @@ function initializeGallery(gallery) {
     if (event.key === "ArrowLeft") showSlide(activeIndex - 1);
     if (event.key === "ArrowRight") showSlide(activeIndex + 1);
   });
-  showSlide(activeIndex);
+  showSlide(activeIndex, false);
   gallery.dataset.galleryInitialized = "true";
 }
 
