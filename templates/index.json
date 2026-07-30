@@ -31,6 +31,18 @@
         "dark": false
       }
     },
+    "featured_collection_Bp8UP9": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "eyebrow": "The Art of Everyday Dressing",
+        "heading": "The Atelier Tee",
+        "description": "An elevated everyday essential, cut from heavyweight combed cotton in a considered palette.",
+        "collection": "the-essential-tee",
+        "products_to_show": 6,
+        "dark": false
+      }
+    },
     "atelier": {
       "type": "featured-collection",
       "settings": {
@@ -63,6 +75,7 @@
   "order": [
     "hero",
     "signature",
+    "featured_collection_Bp8UP9",
     "atelier",
     "story",
     "newsletter"
