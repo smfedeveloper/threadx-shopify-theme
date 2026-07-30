@@ -1,6 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "main": { "type": "main-collection", "settings": { "products_per_page": 12 } }
+    "hero_zPPMt8": {
+      "type": "hero",
+      "name": "Hero",
+      "settings": {
+        "image": "shopify://shop_images/essential-tee-midnight-navy.png",
+        "eyebrow": "The signature collection · 2026",
+        "heading": "<p>Built for now.<br/><em>Made to endure.</em></p>",
+        "text": "Elevated essentials, crafted with intention. Designed for every move, every moment, every day.",
+        "button_label": "Discover the collection",
+        "button_link": ""
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "products_per_page": 12
+      }
+    }
   },
-  "order": ["main"]
+  "order": [
+    "hero_zPPMt8",
+    "main"
+  ]
 }
