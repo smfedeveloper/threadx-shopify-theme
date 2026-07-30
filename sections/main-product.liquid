@@ -47,6 +47,10 @@
         {% for option in product.options_with_values %}
           <fieldset class="option-picker">
             <legend>{{ option.name }}</legend>
+            {% assign option_name = option.name | downcase %}
+            {% if option_name contains 'size' %}
+              <button class="size-guide-trigger" type="button" data-size-guide-open aria-controls="SizeGuide-{{ section.id }}">View size guide</button>
+            {% endif %}
             <div class="option-values">
               {% for value in option.values %}
                 <label>
@@ -76,6 +80,46 @@
   </div>
   <script type="application/json" data-product-json>{{ product.variants | json }}</script>
 </section>
+
+{% assign product_type = product.type | downcase %}
+{% assign is_tshirt = false %}
+{% if product_type contains 't-shirt' or product_type contains 'tshirt' or product_type contains 'tee' or product_type contains 'shirt' %}
+  {% assign is_tshirt = true %}
+{% endif %}
+<dialog class="size-guide" id="SizeGuide-{{ section.id }}" aria-labelledby="SizeGuideTitle-{{ section.id }}">
+  <button class="size-guide__close" type="button" data-size-guide-close aria-label="Close size guide">&times;</button>
+  <p class="eyebrow">Find your fit</p>
+  <h2 id="SizeGuideTitle-{{ section.id }}">{% if is_tshirt %}T-shirt{% else %}Tracksuit{% endif %} size guide</h2>
+  <p class="size-guide__intro">Use your body measurements to choose the best size. Measurements are shown in inches.</p>
+  <div class="size-guide__table-wrap">
+    {% if is_tshirt %}
+      <table>
+        <caption class="visually-hidden">ThreadX T-shirt size measurements</caption>
+        <thead><tr><th>Size</th><th>Chest</th><th>Waist</th><th>Garment length</th></tr></thead>
+        <tbody>
+          <tr><th>S</th><td>36–38</td><td>30–32</td><td>27</td></tr>
+          <tr><th>M</th><td>39–41</td><td>33–35</td><td>28</td></tr>
+          <tr><th>L</th><td>42–44</td><td>36–38</td><td>29</td></tr>
+          <tr><th>XL</th><td>45–47</td><td>39–41</td><td>30</td></tr>
+        </tbody>
+      </table>
+      <p class="size-guide__note"><strong>Fit:</strong> A structured regular fit. Choose one size up for a relaxed silhouette.</p>
+    {% else %}
+      <table>
+        <caption class="visually-hidden">ThreadX tracksuit size measurements</caption>
+        <thead><tr><th>Size</th><th>Chest</th><th>Waist</th><th>Inside leg</th></tr></thead>
+        <tbody>
+          <tr><th>S</th><td>36–38</td><td>30–32</td><td>29</td></tr>
+          <tr><th>M</th><td>39–41</td><td>33–35</td><td>30</td></tr>
+          <tr><th>L</th><td>42–44</td><td>36–38</td><td>31</td></tr>
+          <tr><th>XL</th><td>45–47</td><td>39–41</td><td>32</td></tr>
+        </tbody>
+      </table>
+      <p class="size-guide__note"><strong>Fit:</strong> True to size with a tapered leg. Choose one size up for a more relaxed fit.</p>
+    {% endif %}
+  </div>
+  <p class="size-guide__help">Measure around the fullest part of your chest and your natural waist. If you fall between sizes, choose the larger size.</p>
+</dialog>
 
 {% schema %}
 {

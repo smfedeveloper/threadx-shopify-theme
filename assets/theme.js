@@ -204,6 +204,20 @@ function initializeProduct(scope) {
 
 document.querySelectorAll("[data-product-section]").forEach(initializeProduct);
 
+const sizeGuide = document.querySelector(".size-guide");
+document.addEventListener("click", (event) => {
+  const openTrigger = event.target.closest("[data-size-guide-open]");
+  if (openTrigger && sizeGuide) {
+    event.preventDefault();
+    sizeGuide.showModal();
+    return;
+  }
+  if (event.target.closest("[data-size-guide-close]")) sizeGuide?.close();
+});
+sizeGuide?.addEventListener("click", (event) => {
+  if (event.target === sizeGuide) sizeGuide.close();
+});
+
 function initializeGallery(gallery) {
   if (!gallery || gallery.dataset.galleryInitialized === "true") return;
   const slides = [...gallery.querySelectorAll("[data-gallery-slide]")];
