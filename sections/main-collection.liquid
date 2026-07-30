@@ -1,3 +1,5 @@
+{% render 'collection-hero', collection: collection %}
+
 <section class="main-collection section-shell">
   {% paginate collection.products by section.settings.products_per_page %}
     <div class="product-grid">
