@@ -1,0 +1,100 @@
+{{ 'socks-landing.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'socks-landing.js' | asset_url }}" defer="defer"></script>
+
+{% liquid
+  assign bundle_3 = section.settings.bundle_3_product
+  assign bundle_6 = section.settings.bundle_6_product
+%}
+
+<div class="txs" data-socks-landing data-money-format="{{ shop.money_format | escape }}">
+  <section class="txs-hero">
+    <div class="txs-hero__copy">
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1>{{ section.settings.heading | replace: '. ', '.<br><em>' | append: '</em>' }}</h1>
+      <p>{{ section.settings.intro }}</p>
+      <a class="txs-button" href="#txs-products">Shop the X1 <span>↘</span></a>
+    </div>
+    <div class="txs-hero__media"><img src="{{ 'socks-x1-black.png' | asset_url }}" width="1254" height="1254" alt="Black ThreadX X1 compression socks" loading="eager"></div>
+  </section>
+
+  <div class="txs-ticker"><div><span>ARCH SUPPORT × SEAMLESS TOE × ALL-DAY COMFORT × REINFORCED HEEL × BREATHABLE KNIT × CUSHIONED SOLE ×</span><span aria-hidden="true">ARCH SUPPORT × SEAMLESS TOE × ALL-DAY COMFORT × REINFORCED HEEL × BREATHABLE KNIT × CUSHIONED SOLE ×</span></div></div>
+
+  <section class="txs-shell" id="txs-products">
+    <header class="txs-heading"><div><p class="eyebrow">X1 performance series · 007—012</p><h2>Find your<br><em>everyday pair.</em></h2></div><p>Six considered colourways. The same targeted support, breathable construction and cushioned comfort in every pair.</p></header>
+    <div class="txs-products">
+      {% for block in section.blocks %}
+        {% assign product = block.settings.product %}
+        {% assign slug = block.settings.slug %}
+        <article class="txs-card" data-sock-card data-name="{{ block.settings.name | escape }}" data-product-id="{{ product.selected_or_first_available_variant.id }}" {{ block.shopify_attributes }}>
+          <button class="txs-card__media" type="button" data-sock-gallery-open>
+            <img data-card-main src="{{ 'socks-x1-' | append: slug | append: '.png' | asset_url }}" width="1254" height="1254" alt="{{ block.settings.name | escape }} X1 compression socks" loading="lazy">
+            <span>View gallery ↗</span>
+          </button>
+          <div class="txs-thumbs">
+            {% for suffix in (1..3) %}
+              {% case suffix %}{% when 1 %}{% assign tail = '' %}{% when 2 %}{% assign tail = '-compression' %}{% else %}{% assign tail = '-cushioning' %}{% endcase %}
+              <button type="button" data-sock-thumb class="{% if forloop.first %}is-active{% endif %}" data-src="{{ 'socks-x1-' | append: slug | append: tail | append: '.png' | asset_url }}"><img src="{{ 'socks-x1-' | append: slug | append: tail | append: '.png' | asset_url }}" width="90" height="90" alt="" loading="lazy"></button>
+            {% endfor %}
+          </div>
+          <div class="txs-card__info"><div><small>{{ block.settings.code }}</small><h3>{% if product != blank %}{{ product.title }}{% else %}X1 Compression · {{ block.settings.name }}{% endif %}</h3></div><strong>{% if product != blank %}{{ product.price | money }}{% else %}{{ 1800 | money }}{% endif %}</strong></div>
+          <button class="txs-add" type="button" data-sock-add {% if product == blank or product.available == false %}disabled{% endif %}>{% if product == blank %}Choose product in editor{% elsif product.available %}Add to bag <span>↗</span>{% else %}Sold out{% endif %}</button>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="txs-shell txs-bundles" id="txs-bundles">
+    <header class="txs-heading"><div><p class="eyebrow">More pairs · more value</p><h2>Build a better<br><em>rotation.</em></h2></div><p>Choose three pairs or complete a six-pair rotation—with every colour selected by you.</p></header>
+    <div class="txs-bundle-grid">
+      <article class="txs-bundle"><span class="txs-save">{{ section.settings.bundle_3_saving }}</span><img src="{{ 'socks-x1-three-pair-bundle.png' | asset_url }}" width="1254" height="1254" alt="Three-pair ThreadX sock bundle" loading="lazy"><div><div><small>Most popular · Three pairs</small><h3>{{ section.settings.bundle_3_label }}</h3></div><strong>{% if bundle_3 != blank %}{{ bundle_3.price | money }}{% else %}$45{% endif %}</strong></div><button type="button" data-choose-bundle="3">Build your 3-pack <span>↗</span></button></article>
+      <article class="txs-bundle"><span class="txs-save">{{ section.settings.bundle_6_saving }}</span><img src="{{ 'socks-x1-collection-studio.png' | asset_url }}" width="1254" height="1254" alt="Six-pair ThreadX sock bundle" loading="lazy"><div><div><small>Best value · Six pairs</small><h3>{{ section.settings.bundle_6_label }}</h3></div><strong>{% if bundle_6 != blank %}{{ bundle_6.price | money }}{% else %}$78{% endif %}</strong></div><button type="button" data-choose-bundle="6">Build your 6-pack <span>↗</span></button></article>
+    </div>
+  </section>
+
+  <section class="txs-builder" id="txs-builder" data-bundle-3='{{ bundle_3 | json | escape }}' data-bundle-6='{{ bundle_6 | json | escape }}'>
+    <div class="txs-builder__preview"><div data-active-pair></div><div class="txs-builder__thumbs" data-pair-thumbs></div></div>
+    <div class="txs-builder__form">
+      <p class="eyebrow">Make it yours</p><h2>Build your <em data-bundle-count>3-pair bundle.</em></h2><p>Select a colour for each pair, then choose one available bundle size.</p>
+      <fieldset><legend>01 / Select colours <span data-selection-count></span></legend><div class="txs-colours">
+        {% for block in section.blocks %}<button type="button" data-colour-name="{{ block.settings.name | escape }}" data-colour-slug="{{ block.settings.slug }}" style="--swatch:{{ block.settings.swatch }}"><i></i>{{ block.settings.name }} <b></b></button>{% endfor %}
+      </div></fieldset>
+      <fieldset><legend>02 / Select size <span>Required</span></legend><div class="txs-sizes" data-sizes></div></fieldset>
+      <div class="txs-total"><div><small>Bundle total</small><strong data-bundle-price>—</strong></div><button type="button" data-bundle-add disabled>Add bundle to bag <span>↗</span></button></div>
+      <p class="txs-status" data-bundle-status role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="txs-tech"><div><p class="eyebrow">Built from the ground up</p><h2>Support where<br><em>you need it.</em></h2><dl><div><dt>⌁</dt><dd><strong>Targeted arch compression</strong><span>A supportive midfoot band maintains a secure fit.</span></dd></div><div><dt>≋</dt><dd><strong>Strategic cushioning</strong><span>Extra-density terry knit softens every step.</span></dd></div><div><dt>〰</dt><dd><strong>Ventilated upper</strong><span>Open-knit channels encourage airflow.</span></dd></div></dl></div><img src="{{ 'socks-x1-black-compression.png' | asset_url }}" width="1254" height="1254" alt="X1 compression technology" loading="lazy"></section>
+</div>
+
+<dialog class="txs-gallery" data-sock-gallery><button type="button" data-gallery-close>×</button><img data-gallery-image src="" alt=""><button type="button" data-gallery-prev>←</button><button type="button" data-gallery-next>→</button></dialog>
+
+{% schema %}
+{
+  "name": "Socks landing page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Hero eyebrow", "default": "ThreadX performance · X1" },
+    { "type": "text", "id": "heading", "label": "Hero heading", "default": "Everyday support. Better in multiples." },
+    { "type": "textarea", "id": "intro", "label": "Hero text", "default": "Technical compression, refined for every day. Build your rotation and save when you bundle." },
+    { "type": "header", "content": "Bundle products" },
+    { "type": "paragraph", "content": "Create dedicated 3-pair and 6-pair products at their discounted prices. Their variants should be the available bundle sizes, such as S/M and L/XL." },
+    { "type": "product", "id": "bundle_3_product", "label": "3-pair bundle product" },
+    { "type": "text", "id": "bundle_3_label", "label": "3-pair label", "default": "3-Pair Weekender" },
+    { "type": "text", "id": "bundle_3_saving", "label": "3-pair saving badge", "default": "You save $9" },
+    { "type": "product", "id": "bundle_6_product", "label": "6-pair bundle product" },
+    { "type": "text", "id": "bundle_6_label", "label": "6-pair label", "default": "6-Pair Rotation" },
+    { "type": "text", "id": "bundle_6_saving", "label": "6-pair saving badge", "default": "You save $30" }
+  ],
+  "blocks": [{
+    "type": "colour", "name": "Sock colour", "limit": 6,
+    "settings": [
+      { "type": "product", "id": "product", "label": "Shopify product" },
+      { "type": "text", "id": "name", "label": "Colour name" },
+      { "type": "text", "id": "slug", "label": "Asset slug", "info": "black, charcoal, navy, olive-green, steel-blue, or midnight-green" },
+      { "type": "text", "id": "code", "label": "Product code" },
+      { "type": "color", "id": "swatch", "label": "Swatch", "default": "#171817" }
+    ]
+  }],
+  "presets": [{ "name": "Socks landing page" }]
+}
+{% endschema %}
