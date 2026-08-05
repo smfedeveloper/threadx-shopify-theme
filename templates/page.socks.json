@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "socks-landing",
+      "settings": {
+        "eyebrow": "ThreadX performance · X1",
+        "heading": "Everyday support. Better in multiples.",
+        "intro": "Technical compression, refined for every day. Build your rotation and save when you bundle.",
+        "bundle_3_label": "3-Pair Weekender",
+        "bundle_6_label": "6-Pair Rotation"
+      },
+      "blocks": {
+        "black": { "type": "colour", "settings": { "name": "Black", "slug": "black", "code": "TX—007", "swatch": "#171817" } },
+        "charcoal": { "type": "colour", "settings": { "name": "Charcoal", "slug": "charcoal", "code": "TX—008", "swatch": "#484846" } },
+        "navy": { "type": "colour", "settings": { "name": "Navy", "slug": "navy", "code": "TX—009", "swatch": "#172236" } },
+        "olive": { "type": "colour", "settings": { "name": "Olive", "slug": "olive-green", "code": "TX—010", "swatch": "#5a5b42" } },
+        "steel": { "type": "colour", "settings": { "name": "Steel Blue", "slug": "steel-blue", "code": "TX—011", "swatch": "#647a88" } },
+        "green": { "type": "colour", "settings": { "name": "Midnight Green", "slug": "midnight-green", "code": "TX—012", "swatch": "#183c36" } }
+      },
+      "block_order": ["black", "charcoal", "navy", "olive", "steel", "green"]
+    }
+  },
+  "order": ["main"]
+}
